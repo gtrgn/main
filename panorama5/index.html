@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>360 Degree Panorama Viewer</title>
+    <!-- Load Pannellum CSS from local file -->
+    <link rel="stylesheet" href="pannellum/pannellum.css">
+    <style>
+        /* Ensure full-screen display for desktop and mobile */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            user-select: none; /* Prevent text selection during dragging */
+        }
+        #panorama {
+            width: 100vw;
+            height: 100vh;
+            position: fixed; /* Use fixed to ensure it covers the entire viewport */
+            top: 0;
+            left: 0;
+        }
+        /* Error message styling */
+        #error {
+            display: none;
+            color: red;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1000; /* Ensure error is above panorama */
+        }
+        /* Adjust Pannellum controls for mobile */
+        @media screen and (max-width: 768px) {
+            #panorama .pnlm-controls {
+                transform: scale(0.8); /* Slightly smaller controls for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Container for the panorama viewer -->
+    <div id="panorama"></div>
+    <!-- Error message container -->
+    <div id="error">Failed to load Pannellum or the panorama image. Please check file paths or ensure the files exist.</div>
+    <!-- Load Pannellum JavaScript from local file -->
+    <script src="pannellum/pannellum.js"></script>
+    <script>
+        // Wait for the window to load to ensure Pannellum and image are available
+        window.onload = function() {
+            // Check if pannellum is defined
+            if (typeof pannellum === 'undefined') {
+                console.error('Pannellum library failed to load. Check the path to pannellum.js.');
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+
+            // Initialize Pannellum viewer
+            const viewer = pannellum.viewer('panorama', {
+                "type": "equirectangular",
+                "panorama": "panorama.png", // Replace with your 360-degree image URL or local path
+                "autoLoad": true,
+                "autoRotate": -2,
+                "compass": true,
+                "showControls": true,
+                "hfov": 100, // Default field of view
+                "minHfov": 50,
+                "maxHfov": 120,
+                "draggable": true,
+                "mouseZoom": true,
+                "doubleClickZoom": true,
+                "orientationOnByDefault": true,
+                "minPitch": -90,
+                "maxPitch": 90,
+                "minYaw": -180,
+                "maxYaw": 180
+            });
+
+            // Adjust field of view based on screen size
+            function adjustFov() {
+                const width = window.innerWidth;
+                if (width <= 768) {
+                    viewer.setHfov(80); // Narrower FOV for mobile
+                } else {
+                    viewer.setHfov(100); // Wider FOV for desktop
+                }
+            }
+
+            // Run on load and on resize
+            adjustFov();
+            window.addEventListener('resize', adjustFov);
+
+            // Debug: Log errors if the panorama fails to load
+            viewer.on('error', function(error) {
+                console.error('Pannellum error:', error);
+                document.getElementById('error').style.display = 'block';
+            });
+
+            // Debug: Confirm viewer initialization
+            console.log('Pannellum viewer initialized. Full-screen and dragging enabled.');
+        };
+    </script>
+</body>
+</html>
