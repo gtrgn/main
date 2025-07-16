@@ -2,34 +2,44 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Pannellum Video Demo</title>
+    <title>360° Video with Pannellum</title>
     <link rel="stylesheet" href="pannellum/pannellum.css">
-    <script src="pannellum/pannellum.js"></script>
-
-    <link href="videojs/src/css/video-js.css" rel="stylesheet"
-      type="text/css">
-    <script src="videojs/src/js/video.js"></script>
-    <script src="js/videojs-pannellum-plugin.js"></script>
 </head>
-<body>
+<body style="margin: 0;">
 
-<video id="panorama" class="video-js vjs-default-skin vjs-big-play-centered"
-  controls preload="none" style="width:100%;height:400px;"
-  poster="panorama.png" crossorigin="anonymous">
-    <source src="panorama.mp4" type="video/mp4"/>
-    <p class="vjs-no-js">
-        To view this video please enable JavaScript, and consider upgrading to
-        a web browser that <a href="http://videojs.com/html5-video-support/"
-        target="_blank">supports HTML5 video</a>
-    </p>
-</video>
+<!-- Container for the viewer -->
+<div id="panorama" style="width: 100vw; height: 100vh;"></div>
 
+<!-- Pannellum JS -->
+<script src="pannellum/pannellum.js"></script>
+
+<!-- Initialize the viewer -->
 <script>
-videojs('panorama', {
-    plugins: {
-        pannellum: {}
-    }
-});
+    pannellum.viewer('panorama', {
+        type: "equirectangular",
+        panorama: "video",  // Use "video" as a placeholder
+        autoLoad: true,
+        autoRotate: 2,
+        pitch: 0,
+        yaw: 180,
+        hfov: 110,
+        compass: false,
+        showControls: true,
+        hotSpots: [],
+        video: {
+            // Add your video sources (must be in a compatible 360 format)
+            loop: true,
+            muted: true,
+            autoplay: true,
+            crossOrigin: "anonymous",
+            sources: [
+                {
+                    src: "panorama.mp4",
+                    type: "video/mp4"
+                }
+            ]
+        }
+    });
 </script>
 
 </body>
