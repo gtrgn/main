@@ -15,29 +15,34 @@
 
 <button id="playBtn" style="position:absolute; top:10px; left:10px; z-index:999;">Play Video</button>
 <script>
-  const viewer = pannellum.viewer('panorama', {
-    type: "equirectangular",
-    autoLoad: true,
-    autoRotate: 2,
-    pitch: 0,
-    yaw: 180,
-    hfov: 110,
-    compass: false,
-    showControls: true,
-    hotSpots: [],
-    video: {
-      loop: true,
-      muted: true,
-      autoplay: true,
-      crossOrigin: "anonymous",
-      sources: [{ src: "panorama.mp4", type: "video/mp4" }]
-    }
-  });
+const viewer = pannellum.viewer('panorama', {
+  type: "equirectangular",
+  autoRotate: 2,
+  pitch: 0,
+  yaw: 180,
+  hfov: 110,
+  compass: false,
+  showControls: true,
+  hotSpots: [],
+  video: {
+    loop: true,
+    muted: true,
+    autoplay: false,   // disable autoplay
+    crossOrigin: "anonymous",
+    sources: [{ src: "panorama.mp4", type: "video/mp4" }]
+  }
+});
 
-  document.getElementById('playBtn').addEventListener('click', () => {
-    const video = viewer.getRenderer().getVideo();
-    video.play().catch(console.error);
+const video = viewer.getRenderer().getVideo();
+
+document.getElementById('playBtn').addEventListener('click', () => {
+  video.play().then(() => {
+    console.log('Video playing');
+    viewer.load();
+  }).catch(e => {
+    console.error('Video play error:', e);
   });
+});
 </script>
 
 </body>
