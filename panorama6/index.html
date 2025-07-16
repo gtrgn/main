@@ -13,32 +13,31 @@
 <!-- Pannellum JS -->
 <script src="pannellum/pannellum.js"></script>
 
-<!-- Initialize the viewer -->
+<button id="playBtn" style="position:absolute; top:10px; left:10px; z-index:999;">Play Video</button>
 <script>
-    pannellum.viewer('panorama', {
-        type: "equirectangular",
-        autoLoad: true,
-        autoRotate: 2,
-        pitch: 0,
-        yaw: 180,
-        hfov: 110,
-        compass: false,
-        showControls: true,
-        hotSpots: [],
-        video: {
-            // Add your video sources (must be in a compatible 360 format)
-            loop: true,
-            muted: true,
-            autoplay: true,
-            crossOrigin: "anonymous",
-            sources: [
-                {
-                    src: "panorama.mp4",
-                    type: "video/mp4"
-                }
-            ]
-        }
-    });
+  const viewer = pannellum.viewer('panorama', {
+    type: "equirectangular",
+    autoLoad: true,
+    autoRotate: 2,
+    pitch: 0,
+    yaw: 180,
+    hfov: 110,
+    compass: false,
+    showControls: true,
+    hotSpots: [],
+    video: {
+      loop: true,
+      muted: true,
+      autoplay: true,
+      crossOrigin: "anonymous",
+      sources: [{ src: "panorama.mp4", type: "video/mp4" }]
+    }
+  });
+
+  document.getElementById('playBtn').addEventListener('click', () => {
+    const video = viewer.getRenderer().getVideo();
+    video.play().catch(console.error);
+  });
 </script>
 
 </body>
