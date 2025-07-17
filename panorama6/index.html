@@ -65,12 +65,11 @@
             const viewer = pannellum.viewer('panorama', {   
                 "default": {
                     "firstScene": "start",
-                    "author": "",
                     "sceneFadeDuration": 1000,
                     "autoLoad": true,
                     "autoRotate": -2,
-                    "compass": true,
-                    "showControls": true,
+                    "compass": false,
+                    "showControls": false,
                     "draggable": true,
                     "mouseZoom": true,
                     "doubleClickZoom": true,
@@ -79,7 +78,6 @@
 
                 "scenes": {
                     "start": {
-                        "title": "Start",
                         "hfov": 80,
                         "pitch": 0,
                         "yaw": 0,
@@ -89,14 +87,13 @@
                             {
                                 "pitch": 0,
                                 "yaw": 30,
-                                "type": "scene",
                                 "text": "",
-                                "sceneId": "point1"
+                                "sceneId": "point1",
+                                "type": "scene"
                             }
                         ]
                     },
                     "point1": {
-                        "title": "Point1",
                         "hfov": 80,
                         "pitch": 0,
                         "yaw": 0,
@@ -106,17 +103,17 @@
                             {
                                 "pitch": 0,
                                 "yaw": 0,
-                                "type": "scene",
                                 "text": "",
                                 "sceneId": "start",
                                 "targetYaw": 0,
-                                "targetPitch": 0
-                            }
+                                "targetPitch": 0,
+                                "type": "scene"
+                                }
                         ]
                     }
                 }
             });
-
+        
             // Debug: Log errors if the panorama fails to load
             viewer.on('error', function(error) {
                 console.error('Pannellum error:', error);
